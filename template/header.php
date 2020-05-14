@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 require_once __DIR__.'/../config/app.php';
@@ -20,29 +21,36 @@ ini_set('display_errors', 1);
   <link rel="stylesheet" href="template/style.css">
 </head>
 <body>
-<div class="container">
   <!-- header-->
-    <div class="row">
-      <div class="col-sm">
-        <h1 class="align-middle"><?php echo $title ?></h1>
-      </div>
-      <div class="col-sm"></div>
-      <div class="col-sm">
-        <!-- navbar -->
-        <ul class="nav justify-content-end">
-          <li class="nav-item">
-            <a class="nav-link active" href="index.php">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="contact.php">Contact me</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="messages.php">Forms</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="./"><?php echo $config['app_name'] ?></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="./">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./contact.php">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="./messages.php">Messages</a>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/lgoin.php">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/register.php">Registeration</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+  <!-- connection -->
   <hr>
+  <div class="connection" style="padding-left:20px; ">
   <?php if($mysqli->connect_error){ ?>
   <?php die('
     <div class="sql_not_connected">
@@ -52,5 +60,7 @@ ini_set('display_errors', 1);
     <div class="sql_connected">
       <p> ⬤ Connected to server</p>
     </div>
-    <hr>
   <?php } ?>
+  </div>
+  <hr>
+    <div class="container pt-4">

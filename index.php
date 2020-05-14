@@ -10,7 +10,7 @@ require 'config/db_connection.php';
   <?php foreach($products as $item){ ?>
     <div class="col-mid-4">
       <div class="card mb-3">
-        <div><img class="img-fluid" style="width:300px; height:300px;" src="<?php echo $config['app_url'].$item['image'] ?>"></div>
+        <div><img class="img-fluid" style="width:250px; height:250px;" src="<?php echo $config['app_url'].$item['image'] ?>"></div>
         <h4 class="card-title" style="padding-left:1em;"><?php echo $item['name'] ?></h4>
         <div class="card-body">
           <div class="text-success"><?php echo $item['price'] ?> SAR</div>
@@ -20,5 +20,4 @@ require 'config/db_connection.php';
   <?php } ?>
 </div>
 <?php $mysqli->close(); ?>
-<hr>
 <?php require_once 'template/footer.php'; ?>

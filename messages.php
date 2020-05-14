@@ -4,14 +4,25 @@ require_once 'template/header.php';
 require_once 'config/db_connection.php';
 include_once 'includes/uploader.php';
 
-$query = "select *, f.id as message_id, s.id as service_id from forms f
-left join services s
-on f.service_id = s.id";
+//$query = "select *, f.id as message_id, s.id as service_id from forms f
+//left join services s
+//on f.service_id = s.id
+//order by f.id";
+//$messages = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
 
-$messages = $mysqli->query($query)->fetch_all(MYSQLI_ASSOC);
+$st = $mysqli->prepare("select *, f.id as message_id, s.id as service_id from forms f
+left join services s
+on f.service_id = s.id
+order by f.id");
+
+$st->execute();
+$messages = $st->get_result()->fetch_all(MYSQLI_ASSOC);
+
+
 if(!isset($_GET['id'])){
 
 ?>
+<!-- table -->
 <div class="table-responsive">
   <table class="table table-hover table-striped">
     <thead>
@@ -34,7 +45,10 @@ if(!isset($_GET['id'])){
         <td><?php echo $message['name'] ?></td>
         <td>
           <a href="?id=<?php echo $message['message_id'] ?>" class="btn btn-sm btn-info">View</a>
-          <a href="#" class="btn btn-sm btn-danger">Delete</a>
+          <form onsubmit="return confirm('Are you sure?')" action="" method="post" style="display:inline-block;">
+            <input type="hidden" name="message_id" value="<?php echo $message['message_id'] ?>">
+            <button class="btn btn-sm btn-danger">Delete</button>
+          </form>
         </td>
       </tr>
     <?php } ?>
@@ -46,6 +60,7 @@ if(!isset($_GET['id'])){
   left join services s
   on f.service_id = s.id
   where f.id =".$_GET['id']." limit 1";
+
   $message = $mysqli->query($messageQuery)->fetch_array(MYSQLI_ASSOC);
 ?>
 <div class="container" style="margin-top: 2em;">
@@ -69,5 +84,17 @@ if(!isset($_GET['id'])){
     </div>
   </div>
 </div>
+<?php
+}
+//Deleting a row from DB by id
+if(isset($_POST['message_id'])){
+  $deleteStatement = $mysqli->prepare("delete from forms where id = ? ");
+  $deleteStatement->bind_param('i', $messageId);
+  $messageId = $_POST['message_id'];
+  $deleteStatement->execute();
+  header('location: messages.php');
+  die();
+}
+?>
 
-<?php } require_once 'template/footer.php'; ?>
+<?php require_once 'template/footer.php'; ?>

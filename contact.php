@@ -2,10 +2,7 @@
 $title= 'Contact';
 include_once('includes/uploader.php');
 require_once 'template/header.php';
-//SESSION
-if(isset($_SESSION['contact_form'])){
-  print_r($_SESSION['contact_form']);
-}
+
 
 $service = $mysqli->query("select * from services order by name")->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -52,7 +49,7 @@ $service = $mysqli->query("select * from services order by name")->fetch_all(MYS
   </div>
   <!-- Submit -->
   <button class="btn btn-primary">Send</button>
+
 <!-- End of the Form -->
 </form>
-<hr>
 <?php require_once 'template/footer.php'?>

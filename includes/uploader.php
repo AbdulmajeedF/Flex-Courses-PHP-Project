@@ -5,6 +5,7 @@ require_once __DIR__."/../config/db_connection.php";
 $nameError = $emailError = $documentError = $service_id_Error = $messageError = '';
 //value variables setting:
 $name = $email = $document = $service_id = $message = '';
+$fileName = null;
 //upload directory name variable:
 $uploadDir = 'uploads';
 function filterString($field){
@@ -101,15 +102,30 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
   if(!$nameError && !$emailError && !$messageError){
+
     $fileName ? $filePath =  $uploadDir.'/'.$fileName : $filePath = '';
-    $insertForms =
-      "insert into forms (contact_name, contact_email, contact_document, message, service_id)".
-      "values('$name', '$email', '$filePath', '$message', '$insertService_id')";
-    $mysqli->query($insertForms);
-    echo 'message is sent!';
-    //unset($_SESSION['contact_form']);
+
+//    $insertForms =
+//      "insert into forms (contact_name, contact_email, contact_document, message, service_id)".
+//      "values('$name', '$email', '$filePath', '$message', '$insertService_id')";
+//    $mysqli->query($insertForms);
+
+    $statement = $mysqli->prepare("insert into forms
+      (contact_name, contact_email, contact_document, message, service_id )
+      values(?, ?, ?, ?, ?)");
+    //string s, integer i, double d, binary b
+    $statement->bind_param('ssssi', $dbContanctName, $dbEmail, $dbDocument, $dbMessage, $dbServiceId);
+    $dbContanctName = $name;
+    $dbEmail = $email;
+    $dbDocument = $filePath;
+    $dbMessage = $message;
+    $dbServiceId = $_POST['service_id'];
+
+    $statement->execute();
+
     session_destroy();
     header('location: index.php');
+    //unset($_SESSION['contact_form']);
     die();
   }
 }
