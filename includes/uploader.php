@@ -102,7 +102,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
   if(!$nameError && !$emailError && !$messageError){
-
+    
     $fileName ? $filePath =  $uploadDir.'/'.$fileName : $filePath = '';
 
 //    $insertForms =
@@ -123,9 +123,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $statement->execute();
 
-    session_destroy();
     header('location: index.php');
-    //unset($_SESSION['contact_form']);
     die();
   }
 }

@@ -39,13 +39,19 @@ ini_set('display_errors', 1);
         <a class="nav-link" href="./messages.php">Messages</a>
     </ul>
     <ul class="navbar-nav ml-auto">
+      <?php if(!isset($_SESSION['logged_in'])): ?>
       <li class="nav-item">
-        <a class="nav-link" href="/lgoin.php">Login</a>
+        <a class="nav-link" href="/../login.php">Login</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/register.php">Registeration</a>
       </li>
-    </ul>
+    <?php else: ?>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout.php">Logout</a>
+      </li>
+    <?php endif; ?>
+  </ul>
   </div>
 </nav>
   <!-- connection -->
@@ -64,3 +70,4 @@ ini_set('display_errors', 1);
   </div>
   <hr>
     <div class="container pt-4">
+    <?php include 'template/welcome.php';
