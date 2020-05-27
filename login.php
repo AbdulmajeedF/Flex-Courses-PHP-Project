@@ -18,17 +18,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
    if(empty($password)){array_push($errors, "*Password is required");}
 
    if(!count($errors)){
-     $userExists = $mysqli->query("select id, name, email, password from users where email = '$email' limit 1");
+     $userExists = $mysqli->query("select id, name, email, password, role from users where email = '$email' limit 1");
      if(!$userExists->num_rows){
        array_push($errors, "*The email $email is not correct.");
      }else{
        $foundUser = $userExists->fetch_assoc();
        $foundUserId = $foundUser['id'];
        $foundUserName = $foundUser['name'];
+       $foundUserRole = $foundUserName['role'];
        if(password_verify($password, $foundUser['password'])){
          $_SESSION['logged_in'] = true;
          $_SEESION['user_id'] = $foundUserId;
-         $_SESSION['user_name'] = $foundUserName; //Temporary
+         $_SESSION['user_name'] = $foundUserName;
+         $_SESSION['user_role'] = $foundUserRole;
          $_SESSION['success_message'] = "Welcome back ".$foundUserName;
          header('location: index.php');
        }else{
